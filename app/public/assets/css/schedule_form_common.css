@@ -1,0 +1,158 @@
+/* =============================================================================
+ * File: scheduleWebApp/app/public/assets/css/schedule_form_common.css
+ * Purpose: Style sheet
+ * ============================================================================= */
+
+@import url("/assets/css/theme.css");
+
+body {
+  background: linear-gradient(180deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
+  font-family: var(--font-main);
+  margin: 0;
+  padding: 0;
+  color: var(--text-main);
+}
+
+.container {
+  max-width: 720px;
+  margin: 40px auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 30px 40px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-sub);
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+.time-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.time-row select {
+  flex: 1;
+}
+
+#chipContainer {
+  margin-top: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: #e9f0ff;
+  padding: 6px 12px;
+  border-radius: 16px;
+  margin: 4px;
+  font-size: 14px;
+  border: 1px solid #cddaf4;
+}
+
+.chip button {
+  margin-left: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-sub);
+}
+
+.btn-area {
+  text-align: center;
+  margin-top: 30px;
+}
+
+button[type="submit"],
+button[type="button"] {
+  color: #fff;
+  padding: 12px 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  cursor: pointer;
+  background: var(--primary);
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  background: var(--primary-hover);
+}
+
+.form-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.form-row .form-group.short {
+  flex: 0 0 180px;
+}
+
+.form-row .form-group.long {
+  flex: 1;
+}
+
+.form-row .form-group.date-short {
+  flex: 0 0 180px;
+}
+
+.form-row .form-group.time-block {
+  flex: 0 0 200px;
+}
+
+.time-inner {
+  display: flex;
+  gap: 8px;
+}
+
+.recurring-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recurring-toggle input[type="checkbox"] {
+  width: auto;
+}
+
+.recurring-section {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  background: var(--surface-muted);
+}

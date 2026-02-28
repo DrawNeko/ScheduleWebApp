@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>グループ編集</title>
+  <link rel="stylesheet" href="/assets/css/group_manage.css">
+</head>
+<body>
+  <main class="container">
+    <section class="page-header">
+      <div>
+        <p class="eyebrow">GROUP MANAGEMENT</p>
+        <h1>グループ編集</h1>
+      </div>
+      <button id="backButton" type="button" class="secondary">トップへ戻る</button>
+    </section>
+
+    <p id="roleDescription" class="role-description"></p>
+
+    <section class="table-card">
+      <table id="groupsTable">
+        <thead>
+          <tr>
+            <th class="action-col">編集/削除</th>
+            <th class="type-col">グループタイプ</th>
+            <th>グループ名</th>
+            <th>ユーザ名</th>
+          </tr>
+        </thead>
+        <tbody id="groupsTbody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module" src="/assets/js/group_manage.js"></script>
+</body>
+</html>

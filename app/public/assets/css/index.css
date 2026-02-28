@@ -1,0 +1,168 @@
+/* =============================================================================
+ * File: scheduleWebApp/app/public/assets/css/index.css
+ * Purpose: Style sheet
+ * ============================================================================= */
+
+@import url("/assets/css/theme.css");
+
+body {
+  font-family: var(--font-main);
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
+  color: var(--text-main);
+}
+
+header {
+  padding: 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+h1 {
+  margin: 0 0 10px 0;
+}
+
+#week-controls button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+main {
+  padding: 20px;
+}
+
+#schedule-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+}
+
+#schedule-table {
+  width: max-content;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+
+#schedule-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f3f7ff;
+  z-index: 3;
+  border-bottom: 2px solid #cad8ef;
+}
+
+#schedule-table th,
+#schedule-table td {
+  border: 1px solid #e1e8f5;
+  padding: 0;
+  vertical-align: top;
+  min-width: 120px;
+  min-height: 60px;
+}
+
+.member-col {
+  width: 140px;
+  background: #f8fbff;
+  font-weight: bold;
+  padding: 8px;
+}
+
+.cell-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  min-height: 60px;
+}
+
+.empty {
+  visibility: hidden;
+  height: 1px;
+}
+
+.event-chip {
+  background: #555;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  font-size: 13px;
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.event-chip:hover {
+  transform: scale(1.03);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  opacity: 0.9;
+}
+
+.empty-cell:hover {
+  background-color: #edf4ff;
+  cursor: pointer;
+}
+
+#auth-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+#btnLogout {
+  background: var(--text-main);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+#group-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+#group-bar label {
+  color: var(--text-sub);
+  font-weight: 600;
+}
+
+#group-bar select {
+  min-width: 220px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+#btnSaveDefaultGroup,
+#btnEditGroups {
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#btnSaveDefaultGroup {
+  border: none;
+  background: var(--success);
+  color: #fff;
+}
+
+#btnEditGroups {
+  border: 1px solid var(--success);
+  background: #fff;
+  color: var(--success);
+}

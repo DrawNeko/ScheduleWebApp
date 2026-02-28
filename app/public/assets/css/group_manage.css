@@ -1,0 +1,155 @@
+@import url("/assets/css/theme.css");
+
+body {
+  font-family: var(--font-main);
+  background: linear-gradient(180deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
+  margin: 0;
+  color: var(--text-main);
+}
+
+.container {
+  max-width: 1120px;
+  margin: 28px auto;
+  padding: 0 20px 30px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #4f6ea9;
+}
+
+h1 {
+  margin: 4px 0;
+}
+
+.role-description {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #e8f0ff;
+  color: #31508a;
+  font-size: 14px;
+}
+
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e8edf6;
+  padding: 12px;
+  vertical-align: top;
+}
+
+th {
+  background: #f4f7fd;
+  color: var(--text-sub);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.action-col {
+  width: 160px;
+}
+
+.type-col {
+  width: 130px;
+}
+
+.action-links {
+  display: flex;
+  gap: 8px;
+}
+
+.action-link {
+  display: inline-block;
+  border: 1px solid #b8caee;
+  border-radius: 999px;
+  padding: 2px 10px;
+  color: #33548f;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f7faff;
+}
+
+.action-link:hover {
+  background: #e7f0ff;
+}
+
+.type-badge {
+  display: inline-block;
+  min-width: 76px;
+  text-align: center;
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 3px 10px;
+  color: #355183;
+  background: #edf4ff;
+  border: 1px solid #cdddf8;
+}
+
+.chips-cell {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  background: #eef3ff;
+  border: 1px solid #cad7ff;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+}
+
+.add-row td {
+  text-align: center;
+  font-size: 36px;
+  line-height: 1.2;
+  cursor: pointer;
+  background: #fafcff;
+  color: #3a64aa;
+  transition: background-color 0.15s ease;
+}
+
+.add-row td:hover {
+  background: #eaf2ff;
+}
+
+button {
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondary {
+  border: 1px solid #bed0f2;
+  background: var(--surface);
+  color: #355183;
+}

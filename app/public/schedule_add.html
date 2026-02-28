@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スケジュール登録</title>
+  <link rel="stylesheet" href="/assets/css/schedule_add.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>スケジュール登録</h1>
+
+    <form id="addForm" method="POST" action="/schedules" enctype="application/x-www-form-urlencoded">
+
+      <!-- 登録者 + 同報者（横並び） -->
+      <div class="form-row">
+        <div class="form-group short">
+          <label>登録者</label>
+          <select id="createdBySelect" name="created_by" required></select>
+        </div>
+
+        <div class="form-group long">
+          <label>同報者</label>
+          <select id="participantsSelect"></select>
+          <div id="chipContainer"></div>
+        </div>
+      </div>
+
+      <!-- タイトル -->
+      <div class="form-group">
+        <label>タイトル</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+
+      <!-- 予定日 + 時刻（横並び） -->
+      <div class="form-row">
+        <div class="form-group date-short">
+          <label>予定日</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+
+        <div class="form-group time-block">
+          <label>開始</label>
+          <div class="time-inner">
+            <select id="startHour" name="startHour" required></select>
+            <select id="startMinute" name="startMinute" required></select>
+          </div>
+        </div>
+
+        <div class="form-group time-block">
+          <label>終了</label>
+          <div class="time-inner">
+            <select id="endHour" name="endHour" required></select>
+            <select id="endMinute" name="endMinute" required></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group recurring-toggle">
+        <label><input type="checkbox" id="isRecurring"> 定期予約を設定する</label>
+      </div>
+
+      <div id="recurringSection" class="recurring-section" style="display:none;">
+        <div class="form-row">
+          <div class="form-group date-short">
+            <label>期間（終了日）</label>
+            <input type="date" id="recurringEndDate">
+          </div>
+
+          <div class="form-group time-block">
+            <label>頻度</label>
+            <select id="recurringFrequency">
+              <option value="DAILY">毎日（平日）</option>
+              <option value="WEEKLY">毎週</option>
+              <option value="BIWEEKLY">隔週</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 場所 -->
+      <div class="form-group">
+        <label>場所</label>
+        <input type="text" id="location" name="location">
+      </div>
+
+      <!-- メモ -->
+      <div class="form-group">
+        <label>メモ</label>
+        <textarea id="memo" name="memo"></textarea>
+      </div>
+
+      <!-- 色 -->
+      <div class="form-group">
+        <label for="colorSelect">色</label>
+        <select id="colorSelect" name="color_name"></select>
+      </div>
+
+      <!-- ボタン -->
+      <div class="btn-area">
+        <button type="submit">登録する</button>
+        <button type="button" id="btnBack" class="back-button">トップへ戻る</button>
+      </div>
+
+    </form>
+  </div>
+  <script type="module" src="/assets/js/schedule_add.js"></script>
+</body>
+</html>

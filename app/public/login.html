@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ログイン</title>
+  <link rel="stylesheet" href="/assets/css/login.css">
+</head>
+<body>
+  <div class="login-card">
+    <h1>ログイン</h1>
+    <form id="loginForm">
+      <label for="userId">ユーザID</label>
+      <input id="userId" name="user_id" type="text" required>
+
+      <label for="password">パスワード</label>
+      <input id="password" name="password" type="password" required>
+
+      <button type="submit">ログイン</button>
+    </form>
+    <p id="errorMessage" class="error"></p>
+  </div>
+
+  <script type="module" src="/assets/js/login.js"></script>
+</body>
+</html>

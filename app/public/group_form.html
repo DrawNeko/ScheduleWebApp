@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>グループ作成・編集</title>
+  <link rel="stylesheet" href="/assets/css/group_form.css">
+</head>
+<body>
+  <main class="container">
+    <p class="eyebrow">GROUP MANAGEMENT</p>
+    <h1 id="pageTitle">グループ作成</h1>
+
+    <form id="groupForm">
+      <section class="form-card">
+        <div class="form-row">
+          <label for="groupType">グループタイプ</label>
+          <select id="groupType" required>
+            <option value="PRIVATE">プライベート</option>
+            <option value="PUBLIC">パブリック</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="groupName">グループ名</label>
+          <input id="groupName" type="text" maxlength="30" required>
+        </div>
+
+        <div class="form-row">
+          <label>所属ユーザ</label>
+          <p class="helper-text">表示対象に含めるユーザを選択してください（1名以上必須）。</p>
+          <div id="userList" class="user-list"></div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="submit" id="saveButton" class="primary">保存</button>
+        <button type="button" id="deleteButton" class="danger">削除</button>
+        <button type="button" id="cancelButton" class="secondary">キャンセル</button>
+      </div>
+    </form>
+  </main>
+
+  <script type="module" src="/assets/js/group_form.js"></script>
+</body>
+</html>

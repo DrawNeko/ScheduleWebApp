@@ -1,0 +1,96 @@
+/* =============================================================================
+ * File: scheduleWebApp/app/public/assets/css/schedule_edit.css
+ * Purpose: Style sheet
+ * ============================================================================= */
+
+@import url("/assets/css/schedule_form_common.css");
+
+.btn-area .danger {
+  background: var(--danger);
+}
+
+.btn-area .danger:hover {
+  background: var(--danger-hover);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 34, 58, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: min(560px, calc(100% - 32px));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.modal-description {
+  margin-top: 0;
+  color: var(--text-sub);
+}
+
+.delete-target {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  background: var(--surface-muted);
+}
+
+.delete-target > div {
+  margin-bottom: 6px;
+}
+
+.delete-target > div:last-child {
+  margin-bottom: 0;
+}
+
+.delete-target span {
+  color: var(--text-sub);
+}
+
+.modal-checkbox {
+  margin: 12px 0;
+}
+
+.modal-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+}
+
+.modal-checkbox input[type="checkbox"] {
+  width: auto;
+}
+
+.modal-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  min-width: 120px;
+}
+
+.recurring-single-note {
+  margin: 8px 0 14px;
+  padding-left: 24px;
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}

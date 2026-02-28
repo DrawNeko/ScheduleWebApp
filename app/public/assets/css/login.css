@@ -1,0 +1,49 @@
+/* =============================================================================
+ * File: scheduleWebApp/app/public/assets/css/login.css
+ * Purpose: Style sheet
+ * ============================================================================= */
+
+@import url("/assets/css/theme.css");
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: linear-gradient(180deg, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+.login-card {
+  width: 360px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+h1 { text-align: center; margin-top: 0; }
+label { display: block; margin: 12px 0 6px; font-weight: 600; color: var(--text-sub); }
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px 0;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  cursor: pointer;
+}
+button:hover { background: var(--primary-hover); }
+.error { color: var(--danger); min-height: 20px; margin-top: 10px; }

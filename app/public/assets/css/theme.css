@@ -1,0 +1,19 @@
+:root {
+  --font-main: "Segoe UI", sans-serif;
+  --bg-base: #f4f7fc;
+  --bg-grad-start: #f6f9ff;
+  --bg-grad-end: #edf3ff;
+  --surface: #ffffff;
+  --surface-muted: #f8fbff;
+  --text-main: #24324a;
+  --text-sub: #526481;
+  --border: #d7e1f1;
+  --shadow: 0 10px 28px rgba(33, 58, 105, 0.1);
+  --primary: #2b66c8;
+  --primary-hover: #1f56b0;
+  --danger: #c0392b;
+  --danger-hover: #a72e24;
+  --success: #1d7a46;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+}
