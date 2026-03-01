@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ユーザメンテナンス</title>
+  <link rel="stylesheet" href="/assets/css/group_manage.css">
+</head>
+<body class="user-maintenance-page">
+  <main class="container">
+    <section class="page-header">
+      <div><h1>ユーザメンテナンス</h1></div>
+      <button id="backButton" type="button" class="secondary">トップへ戻る</button>
+    </section>
+
+
+    <section class="search-card" aria-label="ユーザ検索">
+      <div class="search-grid">
+        <label>ユーザID
+          <input id="filterUserId" type="text" placeholder="部分一致">
+        </label>
+        <label>ユーザ名
+          <input id="filterName" type="text" placeholder="部分一致">
+        </label>
+        <label>メール
+          <input id="filterEmail" type="text" placeholder="部分一致">
+        </label>
+        <label>ロール
+          <select id="filterRole"></select>
+        </label>
+      </div>
+      <div class="search-actions">
+        <span>検索結果: <strong id="filterResultCount">0 件</strong></span>
+        <button id="btnClearFilters" type="button" class="secondary">条件クリア</button>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <table class="user-maintenance-table">
+        <thead>
+          <tr><th>ユーザID</th><th>ユーザ名</th><th>メール</th><th>ロール</th><th>操作</th></tr>
+        </thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </section>
+  </main>
+  <script type="module" src="/assets/js/user_maintenance.js"></script>
+</body>
+</html>
