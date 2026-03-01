@@ -38,6 +38,8 @@ main {
 }
 
 #schedule-table-wrapper {
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
   overflow-x: auto;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow);
@@ -110,21 +112,67 @@ main {
   cursor: pointer;
 }
 
-#auth-bar {
+#menu-bar {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
   margin: 8px 0 16px;
 }
 
-#btnLogout {
+#btnHamburgerMenu {
   background: var(--text-main);
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 6px 12px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
+}
+
+#hamburgerMenuPanel {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+#hamburgerMenuPanel.hidden {
+  display: none;
+}
+
+.menu-user-info {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-sub);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+
+#hamburgerMenuPanel button {
+  text-align: left;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+#hamburgerMenuPanel button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 #group-bar {
@@ -165,4 +213,23 @@ main {
   border: 1px solid var(--success);
   background: #fff;
   color: var(--success);
+}
+
+#schedule-table thead th.saturday .date,
+#schedule-table thead th.saturday .day-label,
+#schedule-table .date.saturday,
+#schedule-table .day-label.saturday {
+  color: #1d4ed8;
+}
+
+#schedule-table thead th.sunday .date,
+#schedule-table thead th.sunday .day-label,
+#schedule-table .date.sunday,
+#schedule-table .day-label.sunday {
+  color: #dc2626;
+}
+
+#schedule-table td.saturday,
+#schedule-table td.sunday {
+  background: #f0f0f0;
 }

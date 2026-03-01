@@ -33,7 +33,7 @@
     "user_id": "user1",
     "name": "ユーザ名",
     "email": "sample@example.com",
-    "role": "member",
+    "role": "ld",
     "default_group_id": 1
   }
 }
@@ -145,7 +145,9 @@
 - `group_name` は必須
 - `group_type` は `PUBLIC` / `PRIVATE`
 - `member_user_ids` は1件以上必須
-- `group_type=PUBLIC` はリーダー権限のみ許可（`role` が `ld` / `leader` / `リーダー`）
+- `group_type=PUBLIC` は `admin` / `ld` のみ許可
+- 同一作成スコープで `group_name` の重複は不可（PublicはPublic全体、Privateは作成者のPrivate内）。重複時は `409` を返す
+- `PUT /api/groups/editable/:id` では、`admin` / `ld` のみ `PUBLIC -> PRIVATE` の変更を許可（それ以外の種別変更は不可）
 
 ---
 
@@ -214,11 +216,26 @@
 | Method | Path | 用途 |
 |---|---|---|
 | GET | `/api/users` | ユーザ一覧 |
+| GET | `/api/users/roles` | ロール一覧（`assignable_for_create=1`指定時は作成可能ロールのみ） |
+| GET | `/api/users/permissions` | ログインユーザ権限取得 |
 | GET | `/api/users/:id` | ユーザ詳細 |
 | POST | `/api/users` | ユーザ作成 |
-| DELETE | `/api/users/:id` | ユーザ削除 |
+| PUT | `/api/users/me` | 自身のメール/パスワード更新 |
+| PUT | `/api/users/:id/role` | 任意ユーザへの権限付与（role変更、※自身のユーザIDは変更不可） |
+| PUT | `/api/users/:id/reset-password` | （adminのみ）任意ユーザのパスワードを初期値へリセット（自身は不可） |
+| DELETE | `/api/users/:id` | ユーザ削除（※自身のユーザIDは削除不可） |
 
-> NOTE: `POST /api/users` は現状JSON応答ではなく、`/user_register.html` へのリダイレクト実装です。
+### ロール制約
+
+- `GET /api/users/roles` は `assignable_for_create=1` を指定すると、ログインユーザがユーザ登録時に付与可能なロールだけを返す。
+- `DELETE /api/users/:id` は、実行ユーザ自身（セッションの `user_id`）を指定した場合 `400` を返す。
+- `PUT /api/users/:id/role` は、実行ユーザ自身（セッションの `user_id`）を指定した場合 `400` を返す。
+- `PUT /api/users/:id/reset-password` は、実行ユーザ自身（セッションの `user_id`）を指定した場合 `400` を返す。
+- ユーザメンテナンスの操作対象は、実行ユーザより下位ロールのユーザのみに限定する（管理者＞リーダー＞一般＞BP）。
+- `admin`: 全ての制限対象機能を実行可能（ただし同等権限ユーザへの操作は不可）
+- `ld`: ユーザ追加（admin追加不可）、権限付与（admin変更不可）、パブリックグループ作成/編集/削除
+- `normal`: ユーザ追加のみ（admin/ld追加不可）
+- `business`: 制限対象機能はすべて不可
 
 ---
 

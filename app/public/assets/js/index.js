@@ -2,37 +2,97 @@
  * scheduleWebApp/app/public/assets/js/index.js
  */
 
-import { schedulesApi, authApi, groupsApi } from "./api.js";
+import { schedulesApi, authApi, groupsApi, usersApi } from "./api.js";
 
 let currentDate = new Date();
 let currentGroupId = null;
 let currentGroupUsers = [];
 const WEEKDAY_LABELS = ["日", "月", "火", "水", "木", "金", "土"];
 
+
+function getWeekendClass(dayOfWeek) {
+  if (dayOfWeek === 0) return "sunday";
+  if (dayOfWeek === 6) return "saturday";
+  return "";
+}
+
+
 document.addEventListener("DOMContentLoaded", async () => {
-  await setupAuthBar();
+  await setupHamburgerMenu();
   await setupGroupBar();
   setupButtons();
   await renderWeek();
 });
 
 /**
- * setupAuthBar の処理。
+ * setupHamburgerMenu の処理。
  * 入力値を受け取り、必要な整形・検証・副作用（API 呼び出しや DOM 更新など）を実行します。
  */
-async function setupAuthBar() {
+async function setupHamburgerMenu() {
   const user = await authApi.me();
+  const permissions = await usersApi.permissions();
+
+  const menuButton = document.getElementById("btnHamburgerMenu");
+  const menuPanel = document.getElementById("hamburgerMenuPanel");
   const loginUser = document.getElementById("loginUser");
+
   if (loginUser) {
-    loginUser.textContent = `ログイン中: ${user.name} (${user.user_id})`;
+    loginUser.innerHTML = `${user.name}<br>${user.user_id}<br>${user.role_name_ja}`;
   }
 
-  const btnLogout = document.getElementById("btnLogout");
-  if (btnLogout) {
-    btnLogout.onclick = async () => {
+  const menuUserRegister = document.getElementById("menuUserRegister");
+  const menuUserProfileEdit = document.getElementById("menuUserProfileEdit");
+  const menuUserMaintenance = document.getElementById("menuUserMaintenance");
+  const menuLogout = document.getElementById("menuLogout");
+
+  if (menuUserRegister) {
+    if (!permissions.can_create_user) {
+      menuUserRegister.style.display = "none";
+    } else {
+      menuUserRegister.onclick = () => {
+        window.location.href = "/user_register.html";
+      };
+    }
+  }
+
+  if (menuUserProfileEdit) {
+    menuUserProfileEdit.onclick = () => {
+      window.location.href = "/user_profile_edit.html";
+    };
+  }
+
+  if (menuUserMaintenance) {
+    if (!permissions.can_assign_role && !permissions.can_delete_user && !permissions.can_reset_password) {
+      menuUserMaintenance.style.display = "none";
+    } else {
+      menuUserMaintenance.onclick = () => {
+        window.location.href = "/user_maintenance.html";
+      };
+    }
+  }
+
+  if (menuLogout) {
+    menuLogout.onclick = async () => {
       await authApi.logout();
       location.href = "/login.html";
     };
+  }
+
+  if (menuButton && menuPanel) {
+    menuButton.onclick = () => {
+      const isHidden = menuPanel.classList.toggle("hidden");
+      menuButton.setAttribute("aria-expanded", String(!isHidden));
+    };
+
+    document.addEventListener("click", (event) => {
+      if (menuPanel.classList.contains("hidden")) return;
+
+      const clickedInsideMenu = menuPanel.contains(event.target) || menuButton.contains(event.target);
+      if (!clickedInsideMenu) {
+        menuPanel.classList.add("hidden");
+        menuButton.setAttribute("aria-expanded", "false");
+      }
+    });
   }
 }
 
@@ -118,8 +178,23 @@ async function renderWeek() {
     const weekDates = getWeekDates(displayStart);
 
     weekDates.forEach((d, idx) => {
-      document.querySelector(`.day-label[data-day="${idx}"]`).textContent = WEEKDAY_LABELS[d.getDay()];
-      document.querySelector(`.date[data-day="${idx}"]`).textContent = `${d.getMonth() + 1}/${d.getDate()}`;
+      const dayLabel = document.querySelector(`.day-label[data-day="${idx}"]`);
+      const dateLabel = document.querySelector(`.date[data-day="${idx}"]`);
+      const headerCell = dateLabel.closest('th');
+      const weekendClass = getWeekendClass(d.getDay());
+
+      dayLabel.textContent = WEEKDAY_LABELS[d.getDay()];
+      dateLabel.textContent = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+
+      dayLabel.classList.remove('saturday', 'sunday');
+      dateLabel.classList.remove('saturday', 'sunday');
+      headerCell.classList.remove('saturday', 'sunday');
+
+      if (weekendClass) {
+        dayLabel.classList.add(weekendClass);
+        dateLabel.classList.add(weekendClass);
+        headerCell.classList.add(weekendClass);
+      }
     });
 
     const users = [...currentGroupUsers];
@@ -138,6 +213,11 @@ async function renderWeek() {
       for (let day = 0; day < 7; day++) {
         const td = document.createElement("td");
         td.id = `cell-${u.user_id}-${day}`;
+
+        const weekendClass = getWeekendClass(weekDates[day].getDay());
+        if (weekendClass) {
+          td.classList.add(weekendClass);
+        }
 
         const inner = document.createElement("div");
         inner.className = "cell-inner";

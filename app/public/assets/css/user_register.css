@@ -40,30 +40,65 @@ label {
   color: var(--text-sub);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"],
+select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 15px;
   box-sizing: border-box;
+  background: #fff;
 }
 
 .btn-area {
-  text-align: center;
   margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
-button[type="submit"] {
+button[type="submit"],
+.btn-cancel {
   background: var(--primary);
   color: #fff;
-  padding: 12px 28px;
+  padding: 0 28px;
   border: none;
   border-radius: var(--radius-sm);
   font-size: 16px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 button[type="submit"]:hover {
   background: var(--primary-hover);
+}
+
+.btn-cancel {
+  background: #fff;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.btn-cancel:hover {
+  background: #f4f7ff;
+}
+
+
+.password-visibility {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
+.password-visibility input[type="checkbox"] {
+  width: auto;
+  height: auto;
 }

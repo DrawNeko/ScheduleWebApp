@@ -3,11 +3,7 @@
  */
 
 const groupsRepository = require("../repositories/groupsRepository");
-
-function isLeaderRole(role) {
-  const normalized = String(role || "").trim().toLowerCase();
-  return normalized === "ld" || normalized === "leader" || normalized === "リーダー";
-}
+const { canManagePublicGroup } = require("../utils/rolePolicy");
 
 function normalizeMemberUserIds(memberUserIds) {
   if (!Array.isArray(memberUserIds)) return [];
@@ -58,7 +54,7 @@ exports.getGroupUsersForUser = async (groupId, userId) => {
 };
 
 exports.getEditableGroups = async (loginUser) => {
-  const canManagePublic = isLeaderRole(loginUser.role);
+  const canManagePublic = canManagePublicGroup(loginUser.role);
   const groups = await groupsRepository.getGroupsEditableByUser(loginUser.user_id, canManagePublic);
   const groupsWithUsers = await Promise.all(
     groups.map(async (group) => ({
@@ -81,7 +77,7 @@ exports.getEditableGroupDetail = async (groupId, loginUser) => {
     throw err;
   }
 
-  const canManagePublic = isLeaderRole(loginUser.role);
+  const canManagePublic = canManagePublicGroup(loginUser.role);
   const canEdit = group.group_type === "PRIVATE"
     ? group.owner_user_id === loginUser.user_id
     : canManagePublic;
@@ -119,13 +115,24 @@ exports.createEditableGroup = async (payload, loginUser) => {
     throw err;
   }
 
-  if (groupType === "PUBLIC" && !isLeaderRole(loginUser.role)) {
+  if (groupType === "PUBLIC" && !canManagePublicGroup(loginUser.role)) {
     const err = new Error("Forbidden group access");
     err.status = 403;
     throw err;
   }
 
   const ownerUserId = groupType === "PRIVATE" ? loginUser.user_id : null;
+
+  const duplicated = await groupsRepository.existsGroupNameInScope({
+    groupName,
+    groupType,
+    ownerUserId: loginUser.user_id,
+  });
+  if (duplicated) {
+    const err = new Error("group_name already exists");
+    err.status = 409;
+    throw err;
+  }
 
   return groupsRepository.createGroup({ groupName, groupType, ownerUserId, memberUserIds });
 };
@@ -135,9 +142,18 @@ exports.updateEditableGroup = async (groupId, payload, loginUser) => {
 
   const groupName = String(payload.group_name || "").trim();
   const memberUserIds = normalizeMemberUserIds(payload.member_user_ids);
+  const requestedGroupType = payload.group_type
+    ? String(payload.group_type).trim().toUpperCase()
+    : group.group_type;
 
   if (!groupName) {
     const err = new Error("group_name is required");
+    err.status = 400;
+    throw err;
+  }
+
+  if (!['PUBLIC', 'PRIVATE'].includes(requestedGroupType)) {
+    const err = new Error("group_type is invalid");
     err.status = 400;
     throw err;
   }
@@ -148,7 +164,29 @@ exports.updateEditableGroup = async (groupId, payload, loginUser) => {
     throw err;
   }
 
-  await groupsRepository.updateGroup(group.group_id, { groupName, memberUserIds });
+  if (group.group_type !== requestedGroupType) {
+    const canSwitchPublicToPrivate =
+      group.group_type === 'PUBLIC' &&
+      requestedGroupType === 'PRIVATE' &&
+      canManagePublicGroup(loginUser.role);
+
+    if (!canSwitchPublicToPrivate) {
+      const err = new Error('group_type cannot be changed');
+      err.status = 400;
+      throw err;
+    }
+  }
+
+  const ownerUserId = requestedGroupType === 'PUBLIC'
+    ? null
+    : (group.group_type === 'PUBLIC' ? loginUser.user_id : group.owner_user_id);
+
+  await groupsRepository.updateGroup(group.group_id, {
+    groupName,
+    groupType: requestedGroupType,
+    ownerUserId,
+    memberUserIds,
+  });
 };
 
 exports.deleteEditableGroup = async (groupId, loginUser) => {

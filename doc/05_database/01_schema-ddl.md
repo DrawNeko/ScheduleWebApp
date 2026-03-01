@@ -9,6 +9,7 @@
 
 | テーブル | 用途 | 主キー |
 |---|---|---|
+| `role` | ロールマスタ | `role_id` |
 | `users` | ユーザマスタ | `user_id` |
 | `group_master` | 表示グループ定義 | `group_id` |
 | `group_management` | グループ所属ユーザ | `(group_id, user_id)` |
@@ -19,16 +20,24 @@
 
 ## 3. テーブル定義（要点）
 
-### 3.1 users
+### 3.1 role / users
 
+- `role` テーブルでロール識別子と日本語表示名を管理
+- `users.role` は `NOT NULL` かつ `role.role_id` を参照
 - `default_group_id` は `group_master.group_id` を参照（後段ALTERで付与）
 
 ```sql
+CREATE TABLE role (
+  role_id        VARCHAR(50)  NOT NULL,
+  role_name_ja   VARCHAR(100) NOT NULL,
+  PRIMARY KEY (role_id)
+);
+
 CREATE TABLE users (
   user_id           VARCHAR(50)  NOT NULL,
   name              VARCHAR(100) NOT NULL,
   email             VARCHAR(100) NULL,
-  role              VARCHAR(50)  NULL,
+  role              VARCHAR(50)  NOT NULL,
   password          VARCHAR(255) NOT NULL,
   default_group_id  INT          NULL,
   PRIMARY KEY (user_id)
@@ -66,6 +75,7 @@ CREATE TABLE users (
 | `schedules.recurring_rule_id` | `recurring_rules.rule_id` | 定期予定時のみ |
 | `user_schedule.user_id` | `users.user_id` | `ON DELETE CASCADE` |
 | `user_schedule.schedule_id` | `schedules.schedule_id` | `ON DELETE CASCADE` |
+| `users.role` | `role.role_id` | ロール参照（NULL不可） |
 | `users.default_group_id` | `group_master.group_id` | 後段ALTERで追加 |
 
 ## 5. インデックス方針（抜粋）

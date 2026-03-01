@@ -22,6 +22,7 @@ exports.login = async (userId, password) => {
     name: user.name,
     email: user.email,
     role: user.role,
+    role_name_ja: user.role_name_ja,
     default_group_id: defaultGroupId
   };
 };

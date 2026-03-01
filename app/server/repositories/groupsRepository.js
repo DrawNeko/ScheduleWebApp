@@ -135,6 +135,24 @@ exports.getGroupsEditableByUser = (userId, canManagePublic) => {
   );
 };
 
+
+exports.existsGroupNameInScope = async ({ groupName, groupType, ownerUserId }) => {
+  const normalizedType = String(groupType || "").trim().toUpperCase();
+  if (normalizedType === "PUBLIC") {
+    const rows = await runQuery(
+      `SELECT 1 FROM group_master WHERE group_type = 'PUBLIC' AND group_name = ? LIMIT 1`,
+      [groupName]
+    );
+    return rows.length > 0;
+  }
+
+  const rows = await runQuery(
+    `SELECT 1 FROM group_master WHERE group_type = 'PRIVATE' AND owner_user_id = ? AND group_name = ? LIMIT 1`,
+    [ownerUserId, groupName]
+  );
+  return rows.length > 0;
+};
+
 exports.createGroup = async ({ groupName, groupType, ownerUserId, memberUserIds }) => {
   await beginTransaction();
   try {
@@ -158,10 +176,10 @@ exports.createGroup = async ({ groupName, groupType, ownerUserId, memberUserIds 
   }
 };
 
-exports.updateGroup = async (groupId, { groupName, memberUserIds }) => {
+exports.updateGroup = async (groupId, { groupName, groupType, ownerUserId, memberUserIds }) => {
   await beginTransaction();
   try {
-    await runQuery(`UPDATE group_master SET group_name = ? WHERE group_id = ?`, [groupName, groupId]);
+    await runQuery(`UPDATE group_master SET group_name = ?, group_type = ?, owner_user_id = ? WHERE group_id = ?`, [groupName, groupType, ownerUserId, groupId]);
     await runQuery(`DELETE FROM group_management WHERE group_id = ?`, [groupId]);
 
     if (memberUserIds.length > 0) {

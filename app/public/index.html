@@ -10,9 +10,15 @@
   <header>
     <h1>週間スケジュール</h1>
 
-    <div id="auth-bar">
-      <span id="loginUser"></span>
-      <button id="btnLogout">ログアウト</button>
+    <div id="menu-bar">
+      <button id="btnHamburgerMenu" type="button" aria-expanded="false" aria-controls="hamburgerMenuPanel" aria-label="メニュー">☰</button>
+      <nav id="hamburgerMenuPanel" class="hidden" aria-label="ユーザーメニュー">
+        <div id="loginUser" class="menu-user-info"></div>
+        <button id="menuUserRegister" type="button">ユーザ登録</button>
+        <button id="menuUserProfileEdit" type="button">ユーザ情報編集</button>
+        <button id="menuUserMaintenance" type="button">ユーザメンテナンス</button>
+        <button id="menuLogout" type="button">ログアウト</button>
+      </nav>
     </div>
 
     <div id="group-bar">
@@ -21,6 +27,7 @@
       <button id="btnSaveDefaultGroup" type="button">デフォルトに設定</button>
       <button id="btnEditGroups" type="button">編集</button>
     </div>
+
     <div id="week-controls">
       <button id="btnPrevWeek">1週前</button>
       <button id="btnPrevDay">1日前</button>

@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderRoleDescription(canManagePublic) {
   const roleDescription = document.getElementById("roleDescription");
   roleDescription.textContent = canManagePublic
-    ? "リーダー権限のため、パブリック / 自身作成のプライベートグループを編集できます。"
+    ? "管理者/リーダー権限のため、パブリック / 自身作成のプライベートグループを編集できます。"
     : "自身が作成したプライベートグループを編集できます。";
 }
 

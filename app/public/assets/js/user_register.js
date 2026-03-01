@@ -2,65 +2,71 @@
  * scheduleWebApp/app/public/assets/js/user_register.js
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+import { usersApi } from './api.js';
+import { fetchAssignableRoles } from './role_options.js';
 
-  const form = document.getElementById("userForm");
-  const userIdInput = document.getElementById("user_id");
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const roleInput = document.getElementById("role");
+document.addEventListener('DOMContentLoaded', async () => {
+  const form = document.getElementById('userForm');
+  const userIdInput = document.getElementById('user_id');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const roleSelect = document.getElementById('role');
+  const btnCancel = document.getElementById('btnCancel');
 
-/**
- * showError の処理。
- * 入力値を受け取り、必要な整形・検証・副作用（API 呼び出しや DOM 更新など）を実行します。
- */
-  const showError = (msg) => {
-    alert(msg); // 必要なら画面内に赤字表示に変更可能
-  };
+  const showError = (msg) => alert(msg);
 
-  form.addEventListener("submit", async (e) => {
+  try {
+    const permissions = await usersApi.permissions();
+    if (!permissions.can_create_user) {
+      alert('このロールではユーザ登録を利用できません。');
+      location.href = '/index.html';
+      return;
+    }
+
+    const assignableRoles = await fetchAssignableRoles(usersApi);
+
+    roleSelect.innerHTML = assignableRoles
+      .map((role) => `<option value="${role.role_id}">${role.role_name_ja}</option>`)
+      .join('');
+  } catch (err) {
+    console.error(err);
+    showError('初期表示に失敗しました');
+    return;
+  }
+
+  if (btnCancel) {
+    btnCancel.addEventListener('click', () => {
+      location.href = '/index.html';
+    });
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const user_id = userIdInput.value.trim();
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
-    const role = roleInput.value.trim();
+    const role = roleSelect.value;
 
-    // ===============================
-    // 入力チェック
-    // ===============================
-    if (!user_id) return showError("ユーザIDは必須です");
-    if (!name) return showError("ユーザ名は必須です");
+    if (!user_id) return showError('ユーザIDは必須です');
+    if (!name) return showError('ユーザ名は必須です');
 
     if (email && !email.match(/^[\w\.-]+@[\w\.-]+\.\w+$/)) {
-      return showError("メールアドレスの形式が不正です");
+      return showError('メールアドレスの形式が不正です');
     }
 
-    // ===============================
-    // 重複チェック
-    // ===============================
-    const exists = await fetch(`/api/users/${user_id}`).then(r => r.json()).catch(() => null);
+    const exists = await usersApi.detail(user_id).catch(() => null);
     if (exists && exists.user_id) {
-      return showError("このユーザIDは既に登録されています");
+      return showError('このユーザIDは既に登録されています');
     }
 
-    // ===============================
-    // 登録処理
-    // ===============================
     try {
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id, name, email, role })
-      });
-
-      if (!res.ok) throw new Error("登録に失敗しました");
-
-      alert("登録しました");
-      location.href = "/"; // トップへ戻る
-
+      await usersApi.create({ user_id, name, email, role });
+      alert('登録しました');
+      location.href = '/index.html';
     } catch (err) {
-      showError(err.message);
+      console.error(err);
+      showError('登録に失敗しました');
     }
   });
 });

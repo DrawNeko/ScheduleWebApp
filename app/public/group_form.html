@@ -23,11 +23,17 @@
         <div class="form-row">
           <label for="groupName">グループ名</label>
           <input id="groupName" type="text" maxlength="30" required>
+          <p id="groupNameHint" class="validation-text" aria-live="polite"></p>
         </div>
 
         <div class="form-row">
           <label>所属ユーザ</label>
           <p class="helper-text">表示対象に含めるユーザを選択してください（1名以上必須）。</p>
+          <div class="member-tools">
+            <input id="memberFilter" type="text" placeholder="ユーザID・ユーザ名で絞り込み">
+            <button id="selectFilteredMembersButton" type="button" class="secondary">絞り込み結果を全選択</button>
+          </div>
+          <p id="memberFilterCount" class="helper-text"></p>
           <div id="userList" class="user-list"></div>
         </div>
       </section>

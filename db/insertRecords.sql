@@ -15,10 +15,15 @@ insert into colors (color_name, color_code_bg, color_code_text) values('色10','
 insert into colors (color_name, color_code_bg, color_code_text) values('色11','#FFFFFF','#000000');
 insert into colors (color_name, color_code_bg, color_code_text) values('色12','#000000','#FFFFFF');
 
+insert into role (role_id, role_name_ja) values('admin','管理者');
+insert into role (role_id, role_name_ja) values('ld','リーダー');
+insert into role (role_id, role_name_ja) values('normal','一般');
+insert into role (role_id, role_name_ja) values('business','BP');
+
 insert into users (user_id, name, email, role, password, default_group_id) values('user1', 'ユーザ1', 'user1@gmail.com','ld','pass1', null);
-insert into users (user_id, name, email, role, password, default_group_id) values('user2', 'ユーザ2', 'user2@gmail.com','ld','pass2', null);
-insert into users (user_id, name, email, role, password, default_group_id) values('user3', 'ユーザ3', 'user3@gmail.com','','pass3', null);
-insert into users (user_id, name, email, role, password, default_group_id) values('user4', 'ユーザ4', 'user4@gmail.com','','pass4', null);
+insert into users (user_id, name, email, role, password, default_group_id) values('user2', 'ユーザ2', 'user2@gmail.com','admin','pass2', null);
+insert into users (user_id, name, email, role, password, default_group_id) values('user3', 'ユーザ3', 'user3@gmail.com','normal','pass3', null);
+insert into users (user_id, name, email, role, password, default_group_id) values('user4', 'ユーザ4', 'user4@gmail.com','business','pass4', null);
 
 insert into group_master (group_name, group_type, owner_user_id) values ('全体', 'PUBLIC', null);
 insert into group_master (group_name, group_type, owner_user_id) values ('開発', 'PUBLIC', null);

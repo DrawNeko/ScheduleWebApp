@@ -16,4 +16,16 @@
   --success: #1d7a46;
   --radius-sm: 8px;
   --radius-md: 12px;
+  --control-height: 40px;
 }
+
+button,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"],
+select {
+  box-sizing: border-box;
+  height: var(--control-height);
+}
+

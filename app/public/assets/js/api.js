@@ -70,6 +70,21 @@ export async function apiDelete(path, query = null) {
   return handleResponse(res);
 }
 
+export const usersApi = {
+  list: () => apiGet(API.USERS),
+  detail: (userId) => apiGet(`${API.USERS}/${userId}`),
+  roles: ({ assignableForCreate = false } = {}) =>
+    apiGet(`${API.USERS}/roles`, {
+      assignable_for_create: assignableForCreate ? 1 : undefined,
+    }),
+  permissions: () => apiGet(`${API.USERS}/permissions`),
+  create: (payload) => apiPost(API.USERS, payload),
+  updateMyProfile: (payload) => apiPut(`${API.USERS}/me`, payload),
+  updateRole: (userId, payload) => apiPut(`${API.USERS}/${userId}/role`, payload),
+  resetPassword: (userId) => apiPut(`${API.USERS}/${userId}/reset-password`, {}),
+  remove: (userId) => apiDelete(`${API.USERS}/${userId}`),
+};
+
 // ---- domain helpers (schedules) ----
 export const schedulesApi = {
   list: ({ start, end, includeUsers } = {}) =>

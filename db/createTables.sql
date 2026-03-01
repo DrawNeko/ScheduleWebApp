@@ -5,7 +5,7 @@
 SET NAMES utf8mb4;
 
 -- ------------------------------------------------------------
--- テーブル削除 (子 -> 親順 order)
+-- テーブル削除 (子 -> 親の順)
 -- ------------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -16,24 +16,34 @@ DROP TABLE IF EXISTS group_management;
 DROP TABLE IF EXISTS colors;
 DROP TABLE IF EXISTS group_master;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS role;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ------------------------------------------------------------
--- ユーザ: アプリ利用可能定義
+-- ロール
+-- ------------------------------------------------------------
+CREATE TABLE role (
+  role_id        VARCHAR(50)  NOT NULL,
+  role_name_ja   VARCHAR(100) NOT NULL,
+  PRIMARY KEY (role_id)
+);
+
+-- ------------------------------------------------------------
+-- ユーザ
 -- ------------------------------------------------------------
 CREATE TABLE users (
   user_id           VARCHAR(50)  NOT NULL,
   name              VARCHAR(100) NOT NULL,
   email             VARCHAR(100) NULL,
-  role              VARCHAR(50)  NULL,
+  role              VARCHAR(50)  NOT NULL,
   password          VARCHAR(255) NOT NULL,
   default_group_id  INT          NULL,
   PRIMARY KEY (user_id)
 );
 
 -- ------------------------------------------------------------
--- グループマスタ: 表示グループ定義
+-- グループマスタ: 表示グループ
 -- ------------------------------------------------------------
 CREATE TABLE group_master (
   group_id       INT AUTO_INCREMENT NOT NULL,
@@ -44,7 +54,7 @@ CREATE TABLE group_master (
 );
 
 -- ------------------------------------------------------------
--- グループ管理: メンバー別のグループ管理
+-- グループ管理: ユーザ別グループ管理
 -- ------------------------------------------------------------
 CREATE TABLE group_management (
   group_id  INT         NOT NULL,
@@ -59,7 +69,7 @@ CREATE TABLE group_management (
 );
 
 -- ------------------------------------------------------------
--- 定期予約ルール
+-- 定期予約ルール: 繰り返しのルールを定義
 -- ------------------------------------------------------------
 CREATE TABLE recurring_rules (
   rule_id      INT AUTO_INCREMENT NOT NULL,
@@ -80,7 +90,7 @@ CREATE TABLE recurring_rules (
 );
 
 -- ------------------------------------------------------------
--- スケジュール: 詳細スケジュール
+-- スケジュール: ユーザの予定を管理
 -- ------------------------------------------------------------
 CREATE TABLE schedules (
   schedule_id        INT AUTO_INCREMENT NOT NULL,
@@ -100,7 +110,7 @@ CREATE TABLE schedules (
 );
 
 -- ------------------------------------------------------------
--- ユーザスケジュール: スケジュールの参加者
+-- ユーザスケジュール: ユーザとスケジュールの多対多関係を管理
 -- ------------------------------------------------------------
 CREATE TABLE user_schedule (
   user_id      VARCHAR(50) NOT NULL,
@@ -115,7 +125,7 @@ CREATE TABLE user_schedule (
 );
 
 -- ------------------------------------------------------------
--- 色: スケジュールチップの色定義
+-- 色: スケジュールの色を管理
 -- ------------------------------------------------------------
 CREATE TABLE colors (
   color_id         INT AUTO_INCREMENT NOT NULL,
@@ -138,6 +148,7 @@ CREATE INDEX idx_user_schedule_user        ON user_schedule(user_id);
 CREATE INDEX idx_user_schedule_schedule    ON user_schedule(schedule_id);
 
 CREATE INDEX idx_users_name                ON users(name);
+CREATE INDEX idx_users_role                ON users(role);
 CREATE INDEX idx_users_default_group_id    ON users(default_group_id);
 
 CREATE INDEX idx_recurring_rules_created_by ON recurring_rules(created_by);
@@ -148,8 +159,10 @@ CREATE INDEX idx_group_master_owner        ON group_master(owner_user_id);
 CREATE INDEX idx_group_management_user     ON group_management(user_id);
 
 -- ------------------------------------------------------------
--- Deferred FK: users.default_group_id -> group_master.group_id
+-- Deferred FK: ユーザのデフォルトグループは後で追加 (循環参照のため)
 -- ------------------------------------------------------------
 ALTER TABLE users
+  ADD CONSTRAINT fk_users_role
+  FOREIGN KEY (role) REFERENCES role(role_id),
   ADD CONSTRAINT fk_users_default_group
   FOREIGN KEY (default_group_id) REFERENCES group_master(group_id);
